@@ -2,17 +2,12 @@ import java.io.*;
 
 public class elias{
     public static void main(String[] args){
-	try{
 	    System.out.print("Integer: ");
 	    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 	    int n = Integer.parseInt(input.readLine());
 	    System.out.println(""+loglen(n));
 	}
-	catch(java.io.IOException exp){
-	    exp.printStackTrace();
-	}
     }
-	//
     public static int loglen(int n){
 	int i = 0;
 	while (n > 0){
