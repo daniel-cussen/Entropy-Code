@@ -2,10 +2,14 @@ import java.io.*;
 
 public class elias{
     public static void main(String[] args){
+	try{
 	    System.out.print("Integer: ");
 	    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 	    int n = Integer.parseInt(input.readLine());
-	    System.out.println(""+loglen(n));
+	    System.out.println(encodeInt(n));
+	}
+	catch(java.io.IOException exp){
+	    exp.printStackTrace();
 	}
     }
     public static int loglen(int n){
@@ -16,19 +20,10 @@ public class elias{
 	}
 	return i;
     }
-    public static String binary(int n){
-	String str = "";
-	int aux = n;
-	while(aux > 0){
-	    aux >>= 1;
-	    str = ""+(aux & 1)+str;
-	}
-	return str;
-    }
     public static int[] payload(int n){
-	int count = 1, payload = n, y = 4, b = 3, prev = 0;//shitty var names
+	int count = 1, payload = n, y = 4, b = 3, prev = 0;
 	int vec[] = new int[3];
-	while(payload >= b){
+	while(payload >= b){ //perhaps this loop should be unrolled since it will only operate on ints
 	    prev = b;
 	    y *= y;
 	    b += y;
@@ -36,46 +31,74 @@ public class elias{
 	    count++;
 	}
 	payload -= prev;
-	vec[0]=payload;
-	vec[1]=count;
-	vec[2]=loglen(payload);
+	vec[0]=count;
+	vec[1]=loglen(payload);
+	vec[2]=payload;
 	return vec;
     }
-    public static String doubleformat(int x, int y){
-	String str1="0", str2="";
-	for(int i=0;i<x;i++){
-	    
+    public static String binary(int n){
+	String str = "";
+	int aux = n;
+	while(aux > 0){
+	    str = ""+(aux & 1)+str;
+	    aux >>= 1;
 	}
-	return str1+str2;    
-    }
-
-    public static String encodeInt(int n){
-	int payload[] = payload(n);
-	String str = ""+doubleformat(payload[0],payload[1])+binary(payload[3]);
 	return str;
     }
-    public static int decodeInt(String str){
-	int n = 0, i = 0, bin = 0;
-	while(str.charAt(i)=='1'){
-	    n += (1 << (1 << ++i));
-	    n--;
+    public static String padding(int x, String str, char c){
+	int len = str.length();
+	for(int i=len;i<x;i++){
+	    str = c+str;
 	}
-	i++;
-	int j = i, size = 0;
-	i <<= 1;
-	while(j < i){
-	    size <<= 1;
-	    size += (str.charAt(j) - 48);
-	    j++;
-	}
-	n += ((1 << size) - 1);
-	i += size;
-	while(j < i){
-	    bin <<= 1;
-	    bin += (str.charAt(j) - 48);
-	    j++;
-	}
-	n += bin;
-	return n;
+	return str;
+    }
+    public static String encodeInt(int n){
+	int payload[] = payload(n);
+	//	return ""+payload[0]+" "+binary(payload[1])+" "+payload[2];
+	return ""+payload[2];
+	//	return ""+padding(payload[0],"0",'1')+" "+padding(payload[0],binary(payload[1]),'0')+
+	//  " "+padding(payload[1],binary(payload[2]),'0');
     }
 }
+
+
+ 0  0
+ 0  1 0
+ 0  1 1
+10 00
+10 01 0
+10 01 1
+10 10 00
+10 10 01
+10 10 10
+10 10 11
+10 11 000
+10 11 001
+10 11 010
+10 11 011
+10 11 100
+10 11 101
+10 11 110
+10 11 111
+
+3
+15
+255
+65535
+
+1
+2
+
+1
+2
+4
+8
+
+1
+2
+4
+8
+16
+32
+64
+128
