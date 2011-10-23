@@ -23,7 +23,7 @@ public class elias{
     public static int[] payload(int n){
 	int count = 1, payload = n, y = 4, b = 3, prev = 0;
 	int vec[] = new int[3];
-	while(payload >= b){ //perhaps this loop should be unrolled since it will only operate on 32-bit ints
+	while(payload >= b){ //perhaps this loop should be unrolled
 	    prev = b;
 	    y *= y;
 	    b += y;
