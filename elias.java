@@ -1,50 +1,12 @@
 import java.io.*;
-import java.io.*;
-class U { //en archivo U.java
-    //declaracion de entrada estandar (teclado)
-    static public BufferedReader teclado =
-	new BufferedReader(new InputStreamReader(System.in));
-    //funciones (metodos) para leer enteros y reales
-    static public String readLine(String x)throws IOException{
-	print(x); return teclado.readLine();
-    }
-    static public int readInt(String x)throws IOException{
-	return Integer.parseInt(readLine(x));
-    }
-    static public int readInt()throws IOException{
-	return readInt("");
-    }
-    static public double readDouble(String x)throws IOException{
-	return Double.parseDouble(readLine(x));
-    }
-    static public double readDouble()throws IOException{
-	return readDouble("");
-    }
-    //metodos para escribir frases, enteros y reales
-    static public void print(String x){
-	System.out.print(x);
-    }
-    static public void print(int x){
-	System.out.print(x);
-    }
-    static public void print(double x){
-	System.out.print(x);
-    }
-    static public void println(String x){
-	System.out.println(x);
-    }
-    static public void println(int x){
-	System.out.println(x);
-    }
-    static public void println(double x){
-	System.out.println(x);
-    }
-}//fin de clase U
+
 public class elias{
     public static void main(String[] args){
 	try{
-	    int input = U.readInt("Integer: ");
-	    System.out.println(""+encodeInt(65807));
+	    System.out.print("Integer: ");
+	    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+	    int n = Integer.parseInt(input.readLine());
+	    System.out.println(""+loglen(n));
 	}
 	catch(java.io.IOException exp){
 	    exp.printStackTrace();
@@ -68,22 +30,33 @@ public class elias{
 	}
 	return str;
     }
-    public static String encodeInt(int n){
-	String str = "", escaper = "0";
-	int i = 0, index = 1, payload = n+1, y = 4;
-	while(payload >= y){
-	    payload++;
-	    payload -= y;
+    public static int[] payload(int n){
+	int count = 1, payload = n, y = 4, b = 3, prev = 0;//shitty var names
+	int vec[] = new int[3];
+	while(payload >= b){
+	    prev = b;
 	    y *= y;
-	    escaper = "1" + escaper;
+	    b += y;
+	    b--;
+	    count++;
 	}
-	index = loglen(payload);
-	String indexstr = (""+binary(index));
-	for(int j=indexstr.length();j<escaper.length();j++)
-	    indexstr = "0"+indexstr;
-	str = str.concat(escaper+" "+indexstr);
-	if(index>0)
-	    str = str.concat(" "+binary(payload));
+	payload -= prev;
+	vec[0]=payload;
+	vec[1]=count;
+	vec[2]=loglen(payload);
+	return vec;
+    }
+    public static String doubleformat(int x, int y){
+	String str1="0", str2="";
+	for(int i=0;i<x;i++){
+	    
+	}
+	return str1+str2;    
+    }
+
+    public static String encodeInt(int n){
+	int payload[] = payload(n);
+	String str = ""+doubleformat(payload[0],payload[1])+binary(payload[3]);
 	return str;
     }
     public static int decodeInt(String str){
