@@ -1,7 +1,18 @@
-class decode{
-    public static void main
+import java.io.*;
 
-(String str){
+class decode{
+    public static void main(String[] args){
+	try{
+	    System.out.print("Code: ");
+	    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+	    String str = input.readLine();
+	    System.out.println(fn(str));
+	}
+	catch(java.io.IOException exp){
+	    exp.printStackTrace();
+	}
+    }
+    public static int fn(String str){
 	int n = 0, i = 0, bin = 0;
 	while(str.charAt(i)=='1'){
 	    n += (1 << (1 << ++i));
@@ -25,3 +36,4 @@ class decode{
 	n += bin;
 	return n;
     }
+}
